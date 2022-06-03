@@ -1,8 +1,6 @@
-CASCore Library by Ahmed Hussein
+/*	Random.h
 
-MIT License
-
-Copyright (c) 2013 Ahmed Hussein (amhussein4@gmail.com)
+Copyright (c) 2013 Ahmed M. Hussein (amhussein4@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,3 +19,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#ifndef RANDOM_H_
+#define RANDOM_H_
+
+// random number generation library functions
+
+double rand_uniform();
+double rand_uniform_interval(double min,double max);
+int rand_int(int min,int max);
+int rand_sign();
+double rand_std_normal();
+double rand_normal(double mean,double standard_deviation);
+double rand_exponential(double mean);
+void rand_shuffle(unsigned int size,unsigned int* shuffled_array,unsigned int passes);
+void rand_seed(unsigned int seed);
+
+#endif
+
