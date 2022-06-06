@@ -31,6 +31,7 @@ typedef struct Matrix
 	double* entries;
 } Matrix;
 
+void init_matrix(Matrix* matrix);
 Matrix* create_matrix(unsigned int rows,unsigned int columns);
 unsigned int allocate_matrix(Matrix* matrix,unsigned int rows,unsigned int columns);
 void reset_matrix(Matrix* matrix);

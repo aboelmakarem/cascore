@@ -29,14 +29,19 @@ SOFTWARE.
 #include "Random.h"
 #include "stdio.h"
 
+
 Matrix* create_matrix(unsigned int rows,unsigned int columns)
 {
 	Matrix* matrix = (Matrix*)malloc(sizeof(Matrix));
+	init_matrix(matrix);
+	allocate_matrix(matrix,rows,columns);
+	return matrix;
+}
+void init_matrix(Matrix* matrix)
+{
 	matrix->rows = 0;
 	matrix->columns = 0;
 	matrix->entries = 0;
-	allocate_matrix(matrix,rows,columns);
-	return matrix;
 }
 unsigned int allocate_matrix(Matrix* matrix,unsigned int rows,unsigned int columns)
 {
@@ -56,9 +61,7 @@ void reset_matrix(Matrix* matrix)
 {
 	if(matrix == 0)					return;
 	if(matrix->entries != 0)		free(matrix->entries);
-	matrix->entries = 0;
-	matrix->rows = 0;
-	matrix->columns = 0;
+	init_matrix(matrix);
 }
 void destroy_matrix(Matrix* matrix)
 {

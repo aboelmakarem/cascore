@@ -1,4 +1,6 @@
-# build.py
+# build_testmatrix.py
+# Ahmed M. Hussein (amhussein4@gmail.com)
+# 05/01/2022
 #
 # Copyright (c) 2013 Ahmed M. Hussein (amhussein4@gmail.com)
 # 
@@ -24,17 +26,16 @@ import os
 import os.path
 import sys
 
-sources = ["List.c","Random.c","BLAS.c","Matrix.c","Regression.c","Image.c","Complex.c","Signal.c"]
+sources = ["TestContainers.cpp"]
 
-compiler = "gcc"
-include_dirs = ["include","exclude"]
-src_dir = "src"
-include_arg = ""
-for idir in include_dirs:
-	include_arg = include_arg + "-I" + idir + " "
+compiler = "g++"
+include_arg = "-I../include"
+libnames = ["lcascore","lpng"]
+libargs = ""
+for lname in libnames:
+	libargs = libargs + "-" + lname + " "
 
-
-output = "libcascore.so"
+output = "testcontainers"
 
 object_extension = ".o"
 
@@ -64,29 +65,30 @@ def GetObjectName(sourcename):
 
 def CompileSource(sourcefile,debug):
 	if(NeedToCompile(sourcefile,GetObjectName(sourcefile))):
-		if(debug):	compile_string = compiler + " -c -fPIC -Wall -Wextra -pedantic " + include_arg + " " + sourcefile
-		else:		compile_string = compiler + " -c -fPIC -Wall -Wextra -pedantic -O2 " + include_arg + " " + sourcefile
+		compile_string = compiler + " -Wall -Wextra -pedantic -ansi "
+		if(debug):	compile_string = compile_string + " -g "
+		else:		compile_string = compile_string + " -O2 "
+		compile_string = compile_string + include_arg + " -c " + sourcefile
 		Execute(compile_string)
 		return True
 	return False
 
-def CompileSources(debug):
-	for source in sources:
-		CompileSource(src_dir + "/" + source,debug)
+def CompileSources(source_list,debug):
+	for source in source_list:
+		CompileSource(source,debug)
+
+def LinkObjects(source_list,output):
+	link_command = compiler + " "
+	for source in source_list:
+		link_command = link_command + GetObjectName(source) + " "
+	link_command = link_command + " " + libargs + " -o " + output
+	Execute(link_command)
 
 def Compile(debug):
-	CompileSources(debug)
+	CompileSources(sources,debug)
 
 def Link():
-	# delete any existing libraries before creating a new one
-	remove_command = "rm -f " + output
-	Execute(remove_command)
-	#link_command = "ar -cvq " + output + " "
-	link_command = compiler + " "
-	for source in sources:
-		link_command = link_command + GetObjectName(source) + " "
-	link_command = link_command + "-shared -o " + output
-	Execute(link_command)
+	LinkObjects(sources,output)
 
 clean = False
 debug = False
